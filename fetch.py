@@ -7,7 +7,7 @@ binance = ccxt.binance()
 
 # Specify the symbol and timeframe
 symbol = 'ETH/USDT'
-timeframe = '15m'
+timeframe = '1h'
 limit = 500  # Number of data points per batch
 
 # Define the start and end dates (adjust as needed)
@@ -54,6 +54,6 @@ df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
 #df = df[df['timestamp'] >= end_date_naive]
 
 # Save to CSV
-df.to_csv('binance_ETH_15min_data.csv', index=False)
+df.to_csv('binance_ETH_1h_data.csv', index=False)
 
-print("Data saved to binance_ETH_15min_data.csv")
+print("Data saved to binance_ETH_1h_data.csv")
