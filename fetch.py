@@ -5,18 +5,18 @@ from datetime import datetime
 # Initialize the Binance exchange
 binance = ccxt.binance()
 
-# Specify the symbol and timeframe
-symbol = 'ETH/USDT'
-timeframe = '1h'
+# Get user input for the symbol and timeframe
+symbol = input("Enter the trading pair: ")
+timeframe = input("Enter the timeframe: ")
+
+# Set the limit for the number of data points per batch
 limit = 500  # Number of data points per batch
 
-# Define the start and end dates (adjust as needed)
+# Define the start date (adjust as needed)
 start_date = '2017-01-01T00:00:00Z'
-#end_date = '2024-06-10T00:00:00Z'
 
-# Convert dates to milliseconds
+# Convert start date to milliseconds
 since = binance.parse8601(start_date)
-#end_timestamp = binance.parse8601(end_date)
 
 # Container for all fetched data
 all_ohlcv = []
@@ -42,18 +42,13 @@ while True:
     print(f"Batch {batch_count}: Fetched {len(ohlcv)} rows. Last timestamp: {pd.to_datetime(ohlcv[-1][0], unit='ms')}")
 
 # Convert to DataFrame
-df = pd.DataFrame(all_ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+df = pd.DataFrame(all_ohlcv, columns=['timestamp', 'Open', 'High', 'Low', 'Close', 'Volume'])
 
 # Convert timestamp to datetime
 df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
 
-# Ensure that 'end_date' is also a timezone-naive datetime
-#end_date_naive = pd.to_datetime(end_date).tz_localize(None)
-
-# Filter data to ensure it does not go beyond the end date
-#df = df[df['timestamp'] >= end_date_naive]
-
 # Save to CSV
-df.to_csv('binance_ETH_1h_data.csv', index=False)
+csv_filename = f'binance_{symbol.replace("/", "_")}_{timeframe}_data.csv'
+df.to_csv(csv_filename, index=False)
 
-print("Data saved to binance_ETH_1h_data.csv")
+print(f"Data saved to {csv_filename}")
